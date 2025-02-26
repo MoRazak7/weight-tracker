@@ -30,6 +30,11 @@
             max-width: 100%;
             margin-top: 20px;
         }
+        .edit-btn {
+            cursor: pointer;
+            color: blue;
+            text-decoration: underline;
+        }
     </style>
 </head>
 <body>
@@ -43,6 +48,7 @@
             <tr>
                 <th>Date</th>
                 <th>Weight (lbs)</th>
+                <th>Actions</th>
             </tr>
         </thead>
         <tbody id="weightTable"></tbody>
@@ -65,11 +71,25 @@
             renderChart();
         }
         
+        function editWeight(index) {
+            let newWeight = prompt("Enter new weight:", weightData[index].weight);
+            if (newWeight !== null) {
+                weightData[index].weight = parseFloat(newWeight);
+                localStorage.setItem("weightData", JSON.stringify(weightData));
+                renderTable();
+                renderChart();
+            }
+        }
+        
         function renderTable() {
             let tableBody = document.getElementById("weightTable");
             tableBody.innerHTML = "";
-            weightData.forEach(entry => {
-                let row = `<tr><td>${entry.date}</td><td>${entry.weight}</td></tr>`;
+            weightData.forEach((entry, index) => {
+                let row = `<tr>
+                    <td>${entry.date}</td>
+                    <td>${entry.weight}</td>
+                    <td><span class='edit-btn' onclick='editWeight(${index})'>Edit</span></td>
+                </tr>`;
                 tableBody.innerHTML += row;
             });
         }
