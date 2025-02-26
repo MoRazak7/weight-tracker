@@ -51,10 +51,6 @@
     <input type="number" id="weightInput" placeholder="Enter weight (lbs)">
     <button onclick="addWeight()">Add</button>
     
-    <h3>Set Goal Weight</h3>
-    <input type="number" id="goalWeight" placeholder="Enter goal weight (lbs)">
-    <button onclick="setGoalWeight()">Set Goal</button>
-    
     <h3>Weight History</h3>
     <table>
         <thead>
@@ -68,12 +64,9 @@
     </table>
     
     <canvas id="weightChart"></canvas>
-    <h3 id="remainingWeight"></h3>
     
     <script>
         let weightData = JSON.parse(localStorage.getItem("weightData")) || [];
-        let goalWeight = localStorage.getItem("goalWeight") || "";
-        document.getElementById("goalWeight").value = goalWeight;
         
         function addWeight() {
             let weightInput = document.getElementById("weightInput").value;
@@ -85,21 +78,6 @@
             document.getElementById("weightInput").value = "";
             renderTable();
             renderChart();
-            updateRemainingWeight();
-        }
-        
-        function setGoalWeight() {
-            goalWeight = document.getElementById("goalWeight").value;
-            localStorage.setItem("goalWeight", goalWeight);
-            updateRemainingWeight();
-        }
-        
-        function updateRemainingWeight() {
-            if (goalWeight && weightData.length > 0) {
-                let latestWeight = weightData[weightData.length - 1].weight;
-                let difference = latestWeight - goalWeight;
-                document.getElementById("remainingWeight").innerText = `Remaining weight to goal: ${difference.toFixed(1)} lbs`;
-            }
         }
         
         function editWeight(index) {
@@ -109,7 +87,6 @@
                 localStorage.setItem("weightData", JSON.stringify(weightData));
                 renderTable();
                 renderChart();
-                updateRemainingWeight();
             }
         }
         
@@ -119,7 +96,6 @@
                 localStorage.setItem("weightData", JSON.stringify(weightData));
                 renderTable();
                 renderChart();
-                updateRemainingWeight();
             }
         }
         
@@ -166,7 +142,6 @@
         
         renderTable();
         renderChart();
-        updateRemainingWeight();
     </script>
 </body>
 </html>
